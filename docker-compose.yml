@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: gibdd-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=sqlite:////app/db/gibdd.db
+    volumes:
+      - db-data:/app/db
+    restart: always
+
+  frontend:
+    build: ./frontend
+    container_name: gibdd-frontend
+    ports:
+      - "5177:80"
+    depends_on:
+      - backend
+    restart: always
+
+volumes:
+  db-data:
