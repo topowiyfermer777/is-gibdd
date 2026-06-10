@@ -281,8 +281,8 @@ const Accidents = () => {
                         <thead>
                           <tr className="bg-slate-50 text-[10px] font-bold text-slate-400 uppercase border-b border-slate-200 select-none">
                             <th className="px-4 py-2.5">Автомобиль</th>
-                            <th className="px-4 py-2.5">Гос. знак</th>
-                            <th className="px-4 py-2.5">VIN-код</th>
+                            <th className="px-4 py-2.5 hidden sm:table-cell">Гос. знак</th>
+                            <th className="px-4 py-2.5 hidden md:table-cell">VIN-код</th>
                             <th className="px-4 py-2.5">Степень повреждения</th>
                             <th className="px-4 py-2.5 text-right">Сумма ущерба</th>
                           </tr>
@@ -291,12 +291,20 @@ const Accidents = () => {
                           {accident.participants.map((part, index) => (
                             <tr key={index} className="hover:bg-slate-55">
                               <td className="px-4 py-3 font-semibold text-slate-800">
-                                {part.brand_name} {part.model_name}
+                                <div>{part.brand_name} {part.model_name}</div>
+                                <div className="flex flex-col gap-0.5 mt-0.5 md:hidden font-normal">
+                                  <span className="font-mono text-[10px] text-slate-500 sm:hidden">
+                                    ГРЗ: {part.grz_number || 'без номеров'}
+                                  </span>
+                                  <span className="font-mono text-[9px] text-slate-400">
+                                    VIN: {part.vin}
+                                  </span>
+                                </div>
                               </td>
-                              <td className="px-4 py-3 font-mono font-bold text-slate-600">
+                              <td className="px-4 py-3 font-mono font-bold text-slate-605 hidden sm:table-cell">
                                 {part.grz_number || <span className="text-slate-400 italic font-normal">без номеров</span>}
                               </td>
-                              <td className="px-4 py-3 font-mono text-slate-500">{part.vin}</td>
+                              <td className="px-4 py-3 font-mono text-slate-500 hidden md:table-cell">{part.vin}</td>
                               <td className="px-4 py-3">
                                 <span className={`px-2 py-0.5 rounded-full border text-[10px] font-bold ${getDamageDegreeBadge(part.damage_degree)}`}>
                                   {part.damage_degree || 'Не указана'}

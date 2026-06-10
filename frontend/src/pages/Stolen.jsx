@@ -245,8 +245,8 @@ const Stolen = () => {
                 <thead>
                   <tr className="bg-slate-50/50 text-[10px] font-bold text-slate-400 uppercase border-b border-slate-200 select-none">
                     <th className="px-4 py-3">ТС / Гос. знак</th>
-                    <th className="px-4 py-3">VIN</th>
-                    <th className="px-4 py-3">Дата объявления</th>
+                    <th className="px-4 py-3 hidden md:table-cell">VIN</th>
+                    <th className="px-4 py-3 hidden sm:table-cell">Дата объявления</th>
                     <th className="px-4 py-3">Причина</th>
                     <th className="px-4 py-3">Статус</th>
                     {isOperator && <th className="px-4 py-3 text-right">Действия</th>}
@@ -257,14 +257,17 @@ const Stolen = () => {
                     <tr key={item.id_search} className={`hover:bg-slate-50/50 ${item.is_found ? 'opacity-60 bg-slate-50/20' : ''}`}>
                       <td className="px-4 py-3.5">
                         <div className="font-bold text-slate-800">{item.brand_name} {item.model_name}</div>
-                        {item.grz_number ? (
-                          <div className="text-[10px] font-mono text-slate-500 font-semibold mt-0.5">{item.grz_number}</div>
-                        ) : (
-                          <span className="text-[10px] text-slate-400 italic">без номеров</span>
-                        )}
+                        <div className="flex flex-col gap-0.5 mt-0.5">
+                          {item.grz_number ? (
+                            <div className="text-[10px] font-mono text-slate-500 font-semibold">{item.grz_number}</div>
+                          ) : (
+                            <span className="text-[10px] text-slate-400 italic">без номеров</span>
+                          )}
+                          <div className="text-[9px] font-mono text-slate-400 md:hidden">VIN: {item.vin}</div>
+                        </div>
                       </td>
-                      <td className="px-4 py-3.5 font-mono font-semibold text-slate-600">{item.vin}</td>
-                      <td className="px-4 py-3.5 font-medium">{new Date(item.date_declared).toLocaleDateString('ru-RU')}</td>
+                      <td className="px-4 py-3.5 font-mono font-semibold text-slate-600 hidden md:table-cell">{item.vin}</td>
+                      <td className="px-4 py-3.5 font-medium hidden sm:table-cell">{new Date(item.date_declared).toLocaleDateString('ru-RU')}</td>
                       <td className="px-4 py-3.5 font-semibold text-slate-800">{item.reason_name}</td>
                       <td className="px-4 py-3.5">
                         {item.is_found ? (

@@ -222,24 +222,29 @@ const Register = () => {
         <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
           {/* Stepper indicators */}
           {step <= 4 && (
-            <div className="flex items-center justify-between border-b border-slate-100 pb-5 max-w-xl mx-auto select-none">
-              {[1, 2, 3, 4].map((num) => (
-                <div key={num} className="flex items-center gap-2">
-                  <div className={`h-8 w-8 rounded-full flex items-center justify-center font-bold text-sm border transition-all ${
-                    step === num
-                      ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
-                      : step > num
-                      ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
-                      : 'bg-slate-50 text-slate-400 border-slate-200'
-                  }`}>
-                    {step > num ? '✓' : num}
+            <div className="border-b border-slate-100 pb-5 max-w-xl mx-auto select-none">
+              <div className="flex items-center justify-between">
+                {[1, 2, 3, 4].map((num) => (
+                  <div key={num} className="flex items-center gap-2">
+                    <div className={`h-8 w-8 rounded-full flex items-center justify-center font-bold text-sm border transition-all ${
+                      step === num
+                        ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                        : step > num
+                        ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
+                        : 'bg-slate-50 text-slate-400 border-slate-200'
+                    }`}>
+                      {step > num ? '✓' : num}
+                    </div>
+                    <span className={`text-xs font-semibold hidden sm:inline ${step === num ? 'text-blue-600' : 'text-slate-400'}`}>
+                      {num === 1 ? 'Владелец' : num === 2 ? 'Характеристики' : num === 3 ? 'Выбор ГРЗ' : 'Сводка'}
+                    </span>
+                    {num < 4 && <div className="h-0.5 w-6 md:w-8 bg-slate-200 hidden sm:block"></div>}
                   </div>
-                  <span className={`text-xs font-semibold ${step === num ? 'text-blue-600' : 'text-slate-400'}`}>
-                    {num === 1 ? 'Владелец' : num === 2 ? 'Характеристики' : num === 3 ? 'Выбор ГРЗ' : 'Сводка'}
-                  </span>
-                  {num < 4 && <div className="h-0.5 w-8 bg-slate-200 hidden sm:block"></div>}
-                </div>
-              ))}
+                ))}
+              </div>
+              <div className="text-center text-sm font-bold text-blue-600 sm:hidden mt-4">
+                Шаг {step}: {step === 1 ? 'Сведения о владельце' : step === 2 ? 'Характеристики автомобиля' : step === 3 ? 'Выбор номерного знака' : 'Подтверждение'}
+              </div>
             </div>
           )}
 

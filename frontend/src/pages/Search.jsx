@@ -46,7 +46,7 @@ const Search = () => {
           Поиск осуществляется по VIN-коду, Государственному знаку (ГРЗ), номеру кузова или двигателя.
         </p>
         
-        <form onSubmit={handleSearch} className="flex gap-3 max-w-2xl">
+        <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3 max-w-2xl">
           <div className="relative flex-1">
             <input
               type="text"
@@ -254,15 +254,20 @@ const Search = () => {
                     <thead>
                       <tr className="bg-slate-50/50 text-[11px] font-bold text-slate-400 uppercase border-b border-slate-200 select-none">
                         <th className="px-6 py-3">Дата проведения</th>
-                        <th className="px-6 py-3">Рекомендуемая следующая дата</th>
+                        <th className="px-6 py-3 hidden sm:table-cell">Рекомендуемая следующая дата</th>
                         <th className="px-6 py-3">Пункт ТО</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
                       {vehicle.to_history.map((toRec, i) => (
                         <tr key={i} className="hover:bg-slate-50/50">
-                          <td className="px-6 py-3.5 font-medium">{new Date(toRec.date_conducted).toLocaleDateString('ru-RU')}</td>
-                          <td className="px-6 py-3.5 font-medium text-slate-500">
+                          <td className="px-6 py-3.5 font-medium">
+                            <div>{new Date(toRec.date_conducted).toLocaleDateString('ru-RU')}</div>
+                            <div className="text-[11px] text-slate-400 sm:hidden mt-0.5">
+                              След. ТО: {toRec.date_next ? new Date(toRec.date_next).toLocaleDateString('ru-RU') : 'не указана'}
+                            </div>
+                          </td>
+                          <td className="px-6 py-3.5 font-medium text-slate-500 hidden sm:table-cell">
                             {toRec.date_next ? new Date(toRec.date_next).toLocaleDateString('ru-RU') : 'не указана'}
                           </td>
                           <td className="px-6 py-3.5 font-semibold text-slate-800">{toRec.organization_name}</td>
@@ -288,18 +293,23 @@ const Search = () => {
                   <table className="w-full text-left border-collapse">
                     <thead>
                       <tr className="bg-slate-50/50 text-[11px] font-bold text-slate-400 uppercase border-b border-slate-200 select-none">
-                        <th className="px-6 py-3 col-span-1">Дата и Время</th>
-                        <th className="px-6 py-3 col-span-2">Место ДТП</th>
+                        <th className="px-6 py-3">Дата и Время</th>
+                        <th className="px-6 py-3 hidden sm:table-cell">Место ДТП</th>
                         <th className="px-6 py-3">Тип аварии</th>
                         <th className="px-6 py-3">Степень повреждения</th>
-                        <th className="px-6 py-3">Описание происшествия</th>
+                        <th className="px-6 py-3 hidden md:table-cell">Описание происшествия</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
                       {vehicle.accident_history.map((acc, i) => (
                         <tr key={i} className="hover:bg-slate-50/50">
-                          <td className="px-6 py-3.5 font-medium">{new Date(acc.date_time).toLocaleString('ru-RU')}</td>
-                          <td className="px-6 py-3.5 font-medium text-slate-600 max-w-[200px] truncate" title={acc.location}>{acc.location}</td>
+                          <td className="px-6 py-3.5 font-medium">
+                            <div>{new Date(acc.date_time).toLocaleString('ru-RU')}</div>
+                            <div className="text-[11px] text-slate-500 sm:hidden mt-0.5 max-w-[180px] truncate" title={acc.location}>
+                              {acc.location}
+                            </div>
+                          </td>
+                          <td className="px-6 py-3.5 font-medium text-slate-600 max-w-[200px] truncate hidden sm:table-cell" title={acc.location}>{acc.location}</td>
                           <td className="px-6 py-3.5 font-semibold text-slate-800">{acc.accident_type}</td>
                           <td className="px-6 py-3.5">
                             <span className={`px-2.5 py-0.5 text-xs font-bold rounded-full border ${
@@ -314,7 +324,7 @@ const Search = () => {
                               {acc.damage_degree || 'Не указана'}
                             </span>
                           </td>
-                          <td className="px-6 py-3.5 text-slate-500 max-w-[300px] truncate" title={acc.description}>{acc.description || 'нет'}</td>
+                          <td className="px-6 py-3.5 text-slate-500 max-w-[300px] truncate hidden md:table-cell" title={acc.description}>{acc.description || 'нет'}</td>
                         </tr>
                       ))}
                     </tbody>

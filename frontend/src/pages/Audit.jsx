@@ -219,33 +219,30 @@ const Audit = () => {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-slate-50 text-[10px] font-bold text-slate-400 uppercase border-b border-slate-200 select-none">
-                  <th className="px-6 py-3">Дата / Время</th>
-                  <th className="px-6 py-3">Сотрудник</th>
-                  <th className="px-6 py-3">Действие</th>
-                  <th className="px-6 py-3">Объект</th>
-                  <th className="px-6 py-3">Подробности</th>
+                  <th className="px-6 py-3">Дата / Сотрудник</th>
+                  <th className="px-6 py-3 hidden sm:table-cell">Действие</th>
+                  <th className="px-6 py-3 hidden md:table-cell">Объект</th>
+                  <th className="px-6 py-3">Операция / Детали</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
                 {filteredLogs.map((log) => (
                   <tr key={log.id_audit} className="hover:bg-slate-50/50">
-                    <td className="px-6 py-3.5 font-medium text-slate-500 select-none">
-                      {new Date(log.created_at).toLocaleString('ru-RU')}
-                    </td>
-                    <td className="px-6 py-3.5 select-none">
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-slate-800">ID: {log.user_id}</span>
-                        <span className={`px-2 py-0.5 text-[9px] font-bold rounded border ${getRoleBadge(log.role)}`}>
+                    <td className="px-6 py-3.5 font-medium">
+                      <div className="text-slate-500 text-[11px]">{new Date(log.created_at).toLocaleString('ru-RU')}</div>
+                      <div className="flex items-center gap-1.5 mt-1 select-none">
+                        <span className="font-bold text-slate-800 text-[11px]">ID: {log.user_id}</span>
+                        <span className={`px-1.5 py-0.5 text-[8px] font-bold rounded border ${getRoleBadge(log.role)}`}>
                           {getRoleLabel(log.role)}
                         </span>
                       </div>
                     </td>
-                    <td className="px-6 py-3.5">
+                    <td className="px-6 py-3.5 hidden sm:table-cell select-none">
                       <span className={`px-2 py-0.5 text-[9px] font-bold rounded border ${getActionBadge(log.action)}`}>
                         {log.action}
                       </span>
                     </td>
-                    <td className="px-6 py-3.5 font-medium text-slate-650">
+                    <td className="px-6 py-3.5 font-medium text-slate-650 hidden md:table-cell select-none">
                       {log.entity_type ? (
                         <span>
                           {log.entity_type} {log.entity_id ? `(ID: ${log.entity_id})` : ''}
@@ -254,8 +251,20 @@ const Audit = () => {
                         <span className="text-slate-400 italic">нет</span>
                       )}
                     </td>
-                    <td className="px-6 py-3.5 text-slate-600 font-medium max-w-md truncate md:max-w-none md:whitespace-normal" title={log.details}>
-                      {log.details}
+                    <td className="px-6 py-3.5 text-slate-600 font-medium">
+                      <div className="sm:hidden mb-1 select-none">
+                        <span className={`px-1.5 py-0.5 text-[8px] font-bold rounded border ${getActionBadge(log.action)}`}>
+                          {log.action}
+                        </span>
+                        {log.entity_type && (
+                          <span className="text-[9px] text-slate-400 ml-1 font-normal">
+                            ({log.entity_type})
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-xs max-w-[200px] sm:max-w-md truncate md:max-w-none md:whitespace-normal" title={log.details}>
+                        {log.details}
+                      </div>
                     </td>
                   </tr>
                 ))}
